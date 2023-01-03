@@ -1,0 +1,14 @@
+{
+    "serverPort": "7777",
+    "shortenedDomain": "localhost:7777",
+    "protocol": "http",
+    "method": "random",
+    "env": "docker",
+    "postgres": {
+      "user": "username",
+      "password": "password",
+      "host": "127.0.0.1",
+      "port": "5432",
+      "database": "database"
+    }
+  }

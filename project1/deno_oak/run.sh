@@ -1,0 +1,1 @@
+ENV=local deno run --watch --allow-net --allow-read --allow-env app.js

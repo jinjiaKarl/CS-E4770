@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: database-migration-job
+spec:
+  template:
+    metadata:
+      name: database-migration
+    spec:
+      containers:
+        - name: flyway-migrations
+          image: flyway-migrations:latest
+          imagePullPolicy: Never
+          env:
+            - name: FLYWAY_USER
+              valueFrom:
+                secretKeyRef:
+                  name: database-cluster-app
+                  key: username
+                  optional: false
+            - name: FLYWAY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: database-cluster-app
+                  key: password
+                  optional: false
+      # as its a migration job, we do not want to restart it
+      restartPolicy: Never
+  backoffLimit: 5

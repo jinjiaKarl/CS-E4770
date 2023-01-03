@@ -1,0 +1,40 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: hello.info
+      http:
+        paths:
+          - path: /(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: ui-service
+                port:
+                  number: 7778
+          - path: /()(assets/.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: ui-service
+                port:
+                  number: 7778                  
+          - path: /api(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: api-service
+                port:
+                  number: 7777
+          - path: /sse(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: consumer-service
+                port:
+                  number: 7779

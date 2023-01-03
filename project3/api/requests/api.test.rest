@@ -1,0 +1,63 @@
+POST http://localhost:7777/login
+Content-Type: application/json
+
+{
+  "token": "test"
+}
+
+###
+POST http://hello-world.info/api/login
+Content-Type: application/json
+
+{
+  "token": "test"
+}
+
+###
+# create a message
+POST http://localhost:7777/message
+Content-Type: application/json
+
+{
+  "token": "test",
+  "message": "Hello World"
+}
+
+###
+# get all messages based on nextToken
+GET http://localhost:7777/message
+
+###
+GET http://127.0.0.1:7800/api/message?nextToken=MjAyMi0xMi0wMlQxNzo1NjozNS4wODc3MTUrMDA6MDA=
+
+###
+# get one message based on message id
+GET http://localhost:7777/message/1
+
+###
+GET http://localhost:7800/api/message/1
+
+###
+# reply to a message
+POST http://localhost:7777/message/22
+Content-Type: application/json
+
+{
+  "token": "test",
+  "reply": "reply Hello World"
+}
+
+
+###
+# get all replies
+GET http://localhost:7777/message/1/replies
+
+
+###
+# vote for a message
+POST http://localhost:7777/message/1/vote
+
+
+###
+# unvote for a message
+POST http://localhost:7777/message/1/unvote

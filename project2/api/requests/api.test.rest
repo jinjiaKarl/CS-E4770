@@ -1,0 +1,43 @@
+GET http://localhost:7777/exercises
+
+
+###
+# Login
+POST http://localhost:7777/login
+Content-Type: application/json
+
+{
+  "username": "test"
+}
+
+
+###
+# grade
+POST http://localhost:7777/grade
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6MX0.syJohgXTLfrkCvOQSx7O9K5i61ja1szpUokwdLk7I4w
+
+{
+  "exercise_id": 1,
+  "user_id": 1,
+  "code": "print('hello world')"
+}
+
+###
+# grade
+POST http://localhost:7777/grade
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6MX0.syJohgXTLfrkCvOQSx7O9K5i61ja1szpUokwdLk7I4w
+
+{
+  "exercise_id": 1,
+  "user_id": 1,
+  "code": "print('hello finlan')"
+}
+
+
+
+###
+# get completed exercises
+GET http://localhost:7777/completed
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6MX0.syJohgXTLfrkCvOQSx7O9K5i61ja1szpUokwdLk7I4w

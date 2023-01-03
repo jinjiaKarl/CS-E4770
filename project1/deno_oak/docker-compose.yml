@@ -1,0 +1,36 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:13.4
+    container_name: postgres-database
+    env_file:
+      - database.env
+    # volumes:
+    #   - ../sql/create_table.sql:/docker-entrypoint-initdb.d/create_table.sql
+    ports:
+      - "5432:5432"
+  
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: app:v1
+    container_name: app
+    restart: always
+    ports:
+      - "7777:7777"
+    env_file:
+      - database.env
+    depends_on:
+      - db
+
+  flyway:
+    image: flyway/flyway:8.4.0-alpine
+    container_name: flyway
+    volumes:
+      - ../flyway/sql:/flyway/sql
+    env_file:
+      - database.env
+    depends_on:
+      - db
+    command: -connectRetries=60 -baselineOnMigrate=true migrate

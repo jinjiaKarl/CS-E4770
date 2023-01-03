@@ -1,0 +1,22 @@
+/* Create your schema here */
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    token VARCHAR(255) UNIQUE DEFAULT NULL
+);
+CREATE TABLE IF NOT EXISTS messages (
+    id SERIAL PRIMARY KEY,
+	message TEXT DEFAULT NULL,
+	u_id int DEFAULT NULL,
+	score int DEFAULT 0,
+	create_at TEXT DEFAULT NULL,
+	CONSTRAINT fk_users FOREIGN KEY(u_id) REFERENCES users(id)
+);
+CREATE TABLE IF NOT EXISTS replies (
+    id SERIAL PRIMARY KEY,
+	reply VARCHAR DEFAULT NULL,
+	u_id int DEFAULT NULL,
+	m_id int DEFAULT NULL,
+	create_at TEXT DEFAULT NULL,
+	CONSTRAINT fk_messages FOREIGN KEY(m_id) REFERENCES messages(id),
+	CONSTRAINT fk_users FOREIGN KEY(u_id) REFERENCES users(id)
+);

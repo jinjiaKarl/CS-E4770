@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consumer
+  template:
+    metadata:
+      labels:
+        app: consumer
+    spec:
+      containers:
+        - name: consumer
+          image: consumer:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 7779
+          env:
+            - name: PGPASS
+              valueFrom:
+                secretKeyRef:
+                  name: database-cluster-app
+                  key: pgpass
+                  optional: false # stating that the secret "my-database-cluster-app" must exist
+            - name: MQHOST
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-cluster-default-user
+                  key: host
+                  optional: false
+            - name: MQPASS
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-cluster-default-user
+                  key: password
+                  optional: false
+            - name: MQUSER
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-cluster-default-user
+                  key: username
+                  optional: false
+            - name: MQPORT
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-cluster-default-user
+                  key: port
+                  optional: false

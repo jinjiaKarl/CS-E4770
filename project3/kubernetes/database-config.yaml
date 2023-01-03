@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: database-init
+data:
+  configmap.sql: |
+    SET ROLE app;
+    CREATE TABLE IF NOT EXISTS users (
+      id SERIAL PRIMARY KEY,
+      token VARCHAR(255) UNIQUE DEFAULT NULL
+    );
+    CREATE TABLE IF NOT EXISTS messages (
+      id SERIAL PRIMARY KEY,
+      message TEXT DEFAULT NULL,
+      u_id int DEFAULT NULL,
+      score int DEFAULT 0,
+      create_at TEXT DEFAULT NULL,
+       CONSTRAINT fk_users FOREIGN KEY(u_id) REFERENCES users(id)
+    );
+    CREATE TABLE IF NOT EXISTS replies (
+      id SERIAL PRIMARY KEY,
+      reply VARCHAR DEFAULT NULL,
+      u_id int DEFAULT NULL,
+      m_id int DEFAULT NULL,
+      create_at TEXT DEFAULT NULL,
+      CONSTRAINT fk_messages FOREIGN KEY(m_id) REFERENCES messages(id),
+      CONSTRAINT fk_users FOREIGN KEY(u_id) REFERENCES users(id)
+    );
+
+--- 
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: database-cluster
+spec:
+  instances: 2
+  resources:
+    limits:
+      cpu: 500m
+    requests:
+      cpu: 100m                
+  bootstrap:
+    initdb:
+      database: app
+      owner: app
+      postInitApplicationSQLRefs:
+        configMapRefs:
+        - name: database-init
+          key: configmap.sql
+  storage:
+    size: 1Gi
