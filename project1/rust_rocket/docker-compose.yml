@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:13.4
+    container_name: postgres-database
+    env_file:
+      - database.env
+    volumes:
+      - ./sql/create_table.sql:/docker-entrypoint-initdb.d/create_table.sql
+    ports:
+      - "5432:5432"
+  
+  # app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   image: app_rocket:v1
+  #   container_name: app_rocket
+  #   restart: always
+  #   ports:
+  #     - "7777:7777"
+  #   # env_file:
+  #   #   - database.env
+  #   environment:
+  #     - DATABASE_URL="host=postgres-database user=username password=password dbname=database"
+  #   depends_on:
+  #     - db
